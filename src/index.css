@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.PFont {
+    font-family: "Open Sans", sans-serif;
+  }
+  
+  .SFont {
+    font-family: "Playfair Display", serif;
+  }
+  .AFont {
+    font-family: "Dancing Script", cursive;
+  }
+  .PBGColor{
+   background: #8ed1a3;
+  }
+  .PTColor{
+   color: #8ed1a3;
+  }
+  .SBGColor{
+    background:#fbc8a4 ;
+  }
+  .STColor{
+    color:#fbc8a4 ;
+  }
+  .ABGColor{
+    background:#fdd05e ;
+  }
+  .ATColor{
+    color:#fdd05e ;
+  }
+  .backgroundColor{
+    background-color:#fff9f4 ;
+  }
+  .textColor{
+    color: #333333;
+  }
