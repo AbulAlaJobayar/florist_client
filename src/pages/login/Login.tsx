@@ -1,66 +1,64 @@
-// import { FormEvent, useState } from "react";
-// import { TbFidgetSpinner } from "react-icons/tb";
-// import { Link, useNavigate } from "react-router-dom";
-// import { useLoginMutation } from "../../redux/fetchurs/auth/authApi";
-// import { toast } from "sonner";
-// import { verifyToken } from "../../utils/veryfyToken";
-// import { useAppDispatch } from "../../redux/hooks";
-// import { setUser } from "../../redux/fetchurs/auth/authSlice";
-
 import { Button } from "antd";
 import FMForm from "../../component/form/FMForm";
 import FMInput from "../../component/form/FMInput";
-import { FieldValues } from "react-hook-form";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
+import { FieldValues } from "react-hook-form";
+import { verifyToken } from "../../utils/veryfyToken";
+import { TUser, setUser } from "../../redux/features/auth/authSlice";
+import { useState } from "react";
+import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+ 
 
+const loginSchemaValidation=z.object({
+  email:z.string({required_error:'This field is required'}).email(),
+  password:z.string({required_error:'This field is required'}),
+})
 const Login = () => {
-  const loading = false;
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+const [loading,setLoading]=useState(false)
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [loginData] = useLoginMutation();
+  const onSubmit = async (data: FieldValues) => {
+    console.log(data.email, data.password)
+    const uerInfo={
+      email: data.email,
+      password: data.password,
+    }
+    const toastId = toast.loading("login User", {
+      position: "top-center",
+      style: {
+        color: "#8ed1a3",
+      },
+      duration: 2000,
+    });
+    setLoading(true);
+    try {
+      const res = await loginData(uerInfo).unwrap();
+      console.log(res);
+      const user = verifyToken(res.data)as TUser;
+      console.log(user);
+      dispatch(setUser({ user: user, token: res.data }));
+      toast.success("login success", {
+        id: toastId,
+        duration: 2000,
+        position: "top-center",
+      });
+      // setLoading(false);
+      navigate("/");
+    } catch (err) {
+      toast.error(
+        "something went wrong. please check your Email and Password",
+        { id: toastId, duration: 2000 ,style:{color:'red'}}
+      );
+      
+      setLoading(false);
+    }
   };
-  // const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [loading, setLoading] = useState(false);
-  // const loginInfo = {
-  //   email: email,
-  //   password: password,
-  // };
-  // const [data]: any = useLoginMutation();
-  // const handleSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-  //   const toastId = toast.loading("login User", {
-  //     position: "top-center",
-  //     style: {
-  //       color: "#8ed1a3",
-  //     },
-  //     duration: 2000,
-  //   });
-  //   setLoading(true);
-  //   try {
-  //     const res: any = await data(loginInfo);
-  //     console.log(res.data.data);
-  //     const user = verifyToken(res.data.data);
-  //     console.log(user);
-  //     dispatch(setUser({ user: user, token: res.data.data }));
-  //     toast.success("login success", {
-  //       id: toastId,
-  //       duration: 2000,
-  //       position: "top-center",
-  //     });
-  //     setLoading(false);
-  //     navigate("/");
-  //   } catch (err) {
-  //     toast.error(
-  //       "something went wrong. please check your Email and Password",
-  //       { id: toastId, duration: 2000 }
-
-  //     );
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -71,7 +69,7 @@ const Login = () => {
             Sign in to access your account
           </p>
         </div>
-        <FMForm onSubmit={onSubmit}>
+        <FMForm onSubmit={onSubmit} resolver={zodResolver(loginSchemaValidation)}>
           <div className="space-y-4">
             <FMInput
               type={"email"}
