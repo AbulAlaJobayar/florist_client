@@ -1,6 +1,7 @@
 import { ConfigProvider, Layout } from "antd";
 import SideBar from "./SideBar";
 import DashboardNavbar from "./DashboardNavbar";
+import { Outlet } from "react-router-dom";
 
 const { Content } = Layout;
 
@@ -35,7 +36,7 @@ const MainLayout = () => {
               //   borderRadius: borderRadiusLG,
               // }}
               >
-                hello
+              <Outlet/>
               </div>
             </Content>
           </Layout>
