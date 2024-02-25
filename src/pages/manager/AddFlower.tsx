@@ -11,24 +11,93 @@ import {
   flowerSizeOptions,
 } from "../../constant/golbal";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { useAddProductMutation } from "../../redux/features/product/product.api";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { toast } from "sonner";
+import { imageHosting } from "../../utils/imageHosting";
 
 const AddFlower = () => {
-  const defaultValues = {
-    //     name: "Product Name",
-    //     image:"choose product image",
-    //     price:'flower quantity'
-  };
+  const [loading, setLoading] = useState(false);
+  const [productData] = useAddProductMutation();
+  // const productSchemaValidation = z.object({
+
+  //   category: z.string(),
+  //   color: z.string(),
+  //   fragrance: z.string(),
+  //   image: z.instanceof(File),
+  //   name: z.string(),
+  //   price: z.string(),
+  //   quantity: z.string(),
+  //   size: z.string(),
+  // });
   const onSubmit = async (data: FieldValues) => {
     console.log(data);
+    setLoading(true);
+    const toastId = toast.loading("Product Adding", {
+      position: "top-center",
+      style: {
+        color: "#8ed1a3",
+      },
+      duration: 2000,
+    });
+    try {
+      const image = data?.image;
+      console.log(image);
+      // hosting image in imgbb
+      const imageUrl = await imageHosting(image);
+      console.log(imageUrl);
+      const productInfo = {
+        name: data.name,
+        image: imageUrl,
+        price: Number(data.price),
+        quantity: Number(data.quantity),
+        bloomDate: data.bloomDate,
+        color: data.color,
+        category: data.category,
+        size: data.size,
+        fragrance: data.fragrance,
+      };
+      console.log(productInfo);
+      // send data in server
+      const res = (await productData(productInfo)) as any;
+      if (res.error) {
+        toast.error("Something went Wrong, Please try again", {
+          id: toastId,
+          duration: 3000,
+          position: "top-center",
+          style: { color: "red" },
+        });
+        setLoading(false);
+      } else {
+        toast.success("Product Added successfully", {
+          id: toastId,
+          duration: 2000,
+          position: "top-center",
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error("something went wrong!", {
+        id: toastId,
+        duration: 2000,
+        style: { color: "red" },
+      });
+      setLoading(false);
+    }
   };
-  const loading = true;
+
   return (
     <div className=" w-4/5 mx-auto my-auto">
       <div className=" text-center font-semibold  my-2">
         <h1 className="capitalize text-textColor text-2xl">Add your Product</h1>
       </div>
       <div className="mt-5">
-        <FMForm onSubmit={onSubmit} defaultValues={defaultValues}>
+        <FMForm
+          onSubmit={onSubmit}
+          //  resolver={zodResolver(productSchemaValidation)}
+        >
           <Row gutter={12}>
             <Col span={12}>
               <FMInput type="text" name="name" label="Flower Name" />
@@ -43,7 +112,6 @@ const AddFlower = () => {
                   <Form.Item label={"Image"}>
                     <Input
                       type="file"
-                      accept="image/*"
                       value={value?.fileName}
                       {...field}
                       onChange={(e) => onChange(e.target.files?.[0])}

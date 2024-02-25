@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
 import FMForm from "../../component/form/FMForm";
 import { Controller, FieldValues } from "react-hook-form";
 import FMInput from "../../component/form/FMInput";
@@ -21,7 +20,6 @@ const signupSchema = z.object({
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [register, { error }] = useSignupMutation();
-  const navigate = useNavigate();
   console.log(error);
   const onSubmit = async (data: FieldValues) => {
     setLoading(true);
@@ -60,7 +58,6 @@ const Register = () => {
           position: "top-center",
         });
         setLoading(false);
-        navigate("/login");
       }
     } catch (error) {
       toast.error("something went wrong. please change your email", {
@@ -73,8 +70,7 @@ const Register = () => {
     <div className="flex justify-center items-center  min-h-screen">
       <div className="flex flex-col max-w-md p-6  rounded-md sm:p-10  text-gray-900">
         <div className="mb-8 text-center">
-          <h1 className="my-3 text-4xl font-bold textColor">Sign Up</h1>
-          <p className="text-sm  textColor">Welcome to Florist</p>
+          <h1 className="my-3 text-4xl font-bold textColor">Add Seller</h1>
         </div>
         <FMForm onSubmit={onSubmit} resolver={zodResolver(signupSchema)}>
           <FMInput type="text" name="name" label="Name"></FMInput>
@@ -119,16 +115,7 @@ const Register = () => {
           </div>
         </FMForm>
 
-        <p className="px-6 text-sm text-center text-gray-400">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="hover:underline hover:text-rose-500 text-gray-600"
-          >
-            Login
-          </Link>
-          .
-        </p>
+       
       </div>
     </div>
   );

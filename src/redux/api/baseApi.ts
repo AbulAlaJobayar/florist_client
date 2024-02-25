@@ -7,7 +7,7 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query";
 import { RootState } from "../store";
-import { logout, setUser } from "../features/auth/authSlice";
+import { logout, setUser, } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
@@ -43,10 +43,8 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     );
 
     const data = await res.json();
-
     if (data?.data?.accessToken) {
       const user = (api.getState() as RootState).auth.user;
-
       api.dispatch(
         setUser({
           user,

@@ -1,6 +1,7 @@
+import Register from "../pages/Register/Register";
 import AddFlower from "../pages/manager/AddFlower";
-import AddSeller from "../pages/manager/AddSeller";
 import AllFlower from "../pages/manager/AllFlower";
+import EditProduct from "../pages/manager/EditProduct";
 import ManagerDashboard from "../pages/manager/ManagerDashboard";
 
 export const managerRoutes = [
@@ -18,17 +19,20 @@ export const managerRoutes = [
         element: <AddFlower />,
       },
       {
-        name: "Add Seller",
-        path: "addSeller",
-        element: <AddSeller />,
-      },
-
-      {
         name :"All Flower",
         path:'allFlower',
         element:<AllFlower/>
+      },
+      {
+        path:'allFlower/:id',
+        element:<EditProduct/>
       }
     ],
+  },
+  {
+    name:"Add Seller",
+    path:'signup',
+    element:<Register/>
   },
   {
         name:'Order',
