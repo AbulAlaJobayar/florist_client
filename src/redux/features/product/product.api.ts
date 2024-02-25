@@ -28,7 +28,6 @@ const productManagementApi = baseApi.injectEndpoints({
     getAllProduct: builder.query({
       query: (args) => {
         const params=new URLSearchParams()
-        console.log(args)
         if(args){
             args.forEach((item: { name: string; value: string; })=> {
               params.append(item.name,item.value)
@@ -45,8 +44,24 @@ const productManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         }as TResponse
       },
+      providesTags:['product']
+    }),
+    delateSingleProduct: builder.mutation({
+      query: (id) => ({
+        url: `product/${id}`,
+        method: "Delete",
+      }),
+      invalidatesTags: ['product']
+    }),
+    delateMultipleProduct: builder.mutation({
+      query: (deleteInfo) => ({
+        url: "product/delateMany",
+        method: "POST",
+        body: deleteInfo,
+      }),
+      invalidatesTags: ['product']
     }),
   }),
 });
-export const { useAddProductMutation, useGetAllProductQuery } =
+export const { useAddProductMutation, useGetAllProductQuery,useDelateSingleProductMutation } =
   productManagementApi;

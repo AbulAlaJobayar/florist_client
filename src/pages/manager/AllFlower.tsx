@@ -1,8 +1,9 @@
-import { Button, Popconfirm, Space, Table, TableColumnsType, TableProps } from "antd";
-import { useGetAllProductQuery } from "../../redux/features/product/product.api";
+import { Button, Space, Table, TableColumnsType, TableProps } from "antd";
+import { useDelateSingleProductMutation, useGetAllProductQuery } from "../../redux/features/product/product.api";
 import moment from "moment";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface DataType {
   _id: string;
@@ -20,6 +21,7 @@ const AllFlower = () => {
   const [params,setParams]=useState([])
   const navigate=useNavigate()
   const { data: allProduct } = useGetAllProductQuery(params);
+  const [deleteSingleProduct]=useDelateSingleProductMutation()
   const filteredData = allProduct?.data.map(
     ({
       _id,
@@ -46,12 +48,29 @@ const AllFlower = () => {
       image,
     })
   );
-const handleDelete=(item)=>{
-  console.log(item._id)
+
+const handleDelete=(item:string)=>{
+  const toastId = toast.loading("product Deleting", {
+    position: "top-center",
+    style: {
+      color: "#8ed1a3",
+    },
+    duration: 5000,
+  })
+  deleteSingleProduct(item)
+  toast.success("Deleted successfully", {
+    id: toastId,
+    duration: 2000,
+    position: "top-center",
+  })
 }
-const handleEdit=(item)=>{
-  navigate(`${item._id}`)
-  console.log("edit",item._id)
+const handleEdit=(item:string)=>{
+  navigate(`${item}`)
+  console.log("edit",item)
+}
+const handleDuplicate=(item:string)=>{
+  
+  console.log(item)
 }
 
 
@@ -152,12 +171,12 @@ const handleEdit=(item)=>{
       title: "Action",
       render: (item) =>(
         <Space>
-          <Button size="small" onClick={() => handleDelete(item)}>Delete</Button>
+          <Button size="small" onClick={() => handleDelete(item._id)}>Delete</Button>
        <Space>
-       <Button size="small" onClick={() => handleEdit(item)}>Edit</Button>
+       <Button size="small" onClick={() => handleEdit(item._id)}>Edit</Button>
        </Space>
        <Space>
-       <Button size="small" onClick={() => handleEdit(item)}>Duplicate</Button>
+       <Button size="small" onClick={() => handleDuplicate(item._id)}>Duplicate</Button>
        </Space>
        
         </Space>
@@ -182,11 +201,29 @@ const handleEdit=(item)=>{
      setParams(queryParams);
     }
   };
-
-  
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const onSelectChange = (newSelectedRowKeys:any) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+  const start=()=>{
+    console.log("from start", selectedRowKeys) 
+  }
+  const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
-      <Table columns={columns} dataSource={filteredData} onChange={onChange} />
+     <div style={{marginBottom:16}}>
+        <Button type="default" onClick={start} disabled={!hasSelected} >
+          Bulk Delete
+        </Button>
+        <span style={{ marginLeft: 8 }}>
+          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+        </span>
+      </div>
+      <Table  rowSelection={rowSelection} columns={columns} dataSource={filteredData} onChange={onChange} />
     </>
   );
 };
