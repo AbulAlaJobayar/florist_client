@@ -1,5 +1,5 @@
 import { Button, Space, Table, TableColumnsType, TableProps } from "antd";
-import { useDelateSingleProductMutation, useGetAllProductQuery } from "../../redux/features/product/product.api";
+import { useDelateMultipleProductMutation, useDelateSingleProductMutation, useGetAllProductQuery } from "../../redux/features/product/product.api";
 import moment from "moment";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { toast } from "sonner";
 interface DataType {
   _id: string;
   name: string;
-  price: string;
+  price: number;
   quantity: number;
   bloomDate: string;
   color: string;
@@ -22,6 +22,7 @@ const AllFlower = () => {
   const navigate=useNavigate()
   const { data: allProduct } = useGetAllProductQuery(params);
   const [deleteSingleProduct]=useDelateSingleProductMutation()
+  const [bulkDelete]=useDelateMultipleProductMutation()
   const filteredData = allProduct?.data.map(
     ({
       _id,
@@ -69,8 +70,20 @@ const handleEdit=(item:string)=>{
   console.log("edit",item)
 }
 const handleDuplicate=(item:string)=>{
-  
-  console.log(item)
+   navigate(`../duplicate/${item}`)
+  // const toastId = toast.loading("product Deleting", {
+  //   position: "top-center",
+  //   style: {
+  //     color: "#8ed1a3",
+  //   },
+  //   duration: 5000,
+  // })
+  // deleteSingleProduct(item)
+  // toast.success("Deleted successfully", {
+  //   id: toastId,
+  //   duration: 2000,
+  //   position: "top-center",
+  // })
 }
 
 
@@ -209,14 +222,27 @@ const handleDuplicate=(item:string)=>{
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  const start=()=>{
-    console.log("from start", selectedRowKeys) 
+  // bulk delete
+  const handleBulkDelete=()=>{
+    const toastId = toast.loading("product Deleting", {
+      position: "top-center",
+      style: {
+        color: "#8ed1a3",
+      },
+      duration: 5000,
+    })
+    bulkDelete(selectedRowKeys)
+    toast.success("Deleted successfully", {
+      id: toastId,
+      duration: 2000,
+      position: "top-center",
+    })
   }
   const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
      <div style={{marginBottom:16}}>
-        <Button type="default" onClick={start} disabled={!hasSelected} >
+        <Button type="default" onClick={handleBulkDelete} disabled={!hasSelected} >
           Bulk Delete
         </Button>
         <span style={{ marginLeft: 8 }}>

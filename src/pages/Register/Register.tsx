@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const signupSchema = z.object({
   name: z.string({ required_error: "This field is required" }),
-  image: z.object({}),
+   image: z.instanceof(File),
   email: z.string({ required_error: "This field is required" }).email(),
   password: z.string({ required_error: "This field is required" }),
 });
@@ -32,6 +32,7 @@ const Register = () => {
     });
     try {
       const image = data?.image;
+      console.log(data.image)
       // hosting image in imgbb
       const imageUrl = await imageHosting(image);
       const userInfo = {

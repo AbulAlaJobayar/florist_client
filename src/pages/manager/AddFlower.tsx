@@ -12,8 +12,6 @@ import {
 } from "../../constant/golbal";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAddProductMutation } from "../../redux/features/product/product.api";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { toast } from "sonner";
 import { imageHosting } from "../../utils/imageHosting";
@@ -21,17 +19,6 @@ import { imageHosting } from "../../utils/imageHosting";
 const AddFlower = () => {
   const [loading, setLoading] = useState(false);
   const [productData] = useAddProductMutation();
-  // const productSchemaValidation = z.object({
-
-  //   category: z.string(),
-  //   color: z.string(),
-  //   fragrance: z.string(),
-  //   image: z.instanceof(File),
-  //   name: z.string(),
-  //   price: z.string(),
-  //   quantity: z.string(),
-  //   size: z.string(),
-  // });
   const onSubmit = async (data: FieldValues) => {
     console.log(data);
     setLoading(true);

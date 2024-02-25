@@ -1,43 +1,46 @@
+// import { z } from "zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useEditProductMutation, useGetSingleProductQuery } from "../../redux/features/product/product.api";
-import FMForm from "../../component/form/FMForm";
-import { Button, Col, Row } from "antd";
-import FMInput from "../../component/form/FMInput";
-import {  FieldValues } from "react-hook-form";
-//import FMDatepicker from "../../component/form/FMDatepicker";
-import PMSelect from "../../component/form/FMSelect";
-import { TbFidgetSpinner } from "react-icons/tb";
+import {
+  useAddProductMutation,
+  useGetSingleProductQuery,
+} from "../../redux/features/product/product.api";
+import { Controller, FieldValues } from "react-hook-form";
 import { toast } from "sonner";
-// import { imageHosting } from "../../utils/imageHosting";
+import FMForm from "../../component/form/FMForm";
+import { Button, Col, Form, Input, Row } from "antd";
+import FMInput from "../../component/form/FMInput";
+import PMSelect from "../../component/form/FMSelect";
 import {
   flowerCategoryOptions,
   flowerColorOptions,
   flowerFragranceOptions,
   flowerSizeOptions,
 } from "../../constant/golbal";
-// import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
+import FMDatepicker from "../../component/form/FMDatepicker";
+import { TbFidgetSpinner } from "react-icons/tb";
+import { imageHosting } from "../../utils/imageHosting";
 
 const EditProduct = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const { data: singlePData } = useGetSingleProductQuery(id);
-  console.log(singlePData?.data.name)
-  const [UpdateProductData] = useEditProductMutation();
+  console.log(singlePData?.data.name);
+  const [productData] = useAddProductMutation();
   const defaultValue = {
     name: singlePData?.data.name,
-    image:singlePData?.data.image,
-    price:singlePData?.data.price,
-    quantity:singlePData?.data.quantity,
-    // bloomDate: singlePData?.data.bloomDate,
+    image: singlePData?.data.image,
+    price: singlePData?.data.price,
+    quantity: singlePData?.data.quantity,
+    bloomDate: "",
     color: singlePData?.data.color,
     category: singlePData?.data.category,
     size: singlePData?.data.size,
     fragrance: singlePData?.data.fragrance,
   };
   const onSubmit = async (data: FieldValues) => {
-    
     setLoading(true);
     const toastId = toast.loading("Product Adding", {
       position: "top-center",
@@ -46,21 +49,25 @@ const EditProduct = () => {
       },
       duration: 2000,
     });
+    let imageUrl;
+    if (data?.image) {
+      imageUrl = data?.image;
+    }
     try {
+      const hostImage = await imageHosting(imageUrl);
       const productInfo = {
-        name: data.name || singlePData?.data.name ,
-        image: singlePData?.data.image,
-        price: Number(data.price)|| singlePData?.data.price ,
-        quantity: Number(data.quantity)|| singlePData?.data.quantity ,
-        bloomDate: singlePData?.data.bloomDate,
+        name: data.name || singlePData?.data.name,
+        image: hostImage || singlePData?.data.image,
+        price: Number(data.price) || singlePData?.data.price,
+        quantity: Number(data.quantity) || singlePData?.data.quantity,
+        bloomDate: data.bloomDate || singlePData?.data.bloomDate,
         color: data.color || singlePData?.data.color,
-        category: data.category ||singlePData?.data.category ,
-        size: data.size ||singlePData?.data.size,
-        fragrance: data.fragrance ||singlePData?.data.fragrance,
+        category: data.category || singlePData?.data.category,
+        size: data.size || singlePData?.data.size,
+        fragrance: data.fragrance || singlePData?.data.fragrance,
       };
-      console.log(productInfo);
       // send data in server
-      const res = (await UpdateProductData({id,productInfo})) as any;
+      const res = (await productData(productInfo)) as any;
       if (res.error) {
         toast.error("Something went Wrong, Please try again", {
           id: toastId,
@@ -93,16 +100,12 @@ const EditProduct = () => {
         <h1 className="capitalize text-textColor text-2xl">Add your Product</h1>
       </div>
       <div className="mt-5">
-        <FMForm
-          onSubmit={onSubmit}
-          defaultValues={defaultValue}
-        // resolver={zodResolver(productSchemaValidation)}
-        >
+        <FMForm onSubmit={onSubmit} defaultValues={defaultValue}>
           <Row gutter={12}>
             <Col span={12}>
               <FMInput type="text" name="name" label="Flower Name" />
             </Col>
-            {/* <Col span={12}>
+            <Col span={12}>
               <Controller
                 name="image"
                 render={({
@@ -122,15 +125,21 @@ const EditProduct = () => {
                   </Form.Item>
                 )}
               />
-            </Col> */}
-            <Col span={12}>
-              <FMInput type="number" name="price" label="Flower Price" />
             </Col>
           </Row>
           <Row gutter={12}>
             <Col span={12}>
+              <FMInput type="number" name="price" label="Flower Price" />
+            </Col>
+            <Col span={12}>
               <FMInput type="number" name="quantity" label="Flower Quantity" />
             </Col>
+          </Row>
+          <Row gutter={12}>
+            <Col span={12}>
+              <FMDatepicker name="bloomDate" label="Bloom Date" />
+            </Col>
+
             <Col span={12}>
               <PMSelect
                 name="color"
@@ -139,12 +148,7 @@ const EditProduct = () => {
               />
             </Col>
           </Row>
-          {/* <Row gutter={12}>
-            <Col span={12}>
-              <FMDatepicker name="bloomDate" label="Bloom Date" />
-            </Col>
-            
-          </Row> */}
+
           <Row gutter={12}>
             <Col span={12}>
               <PMSelect
@@ -175,7 +179,6 @@ const EditProduct = () => {
               <Button
                 htmlType="submit"
                 style={{ width: "100%", marginBottom: "20px" }}
-                //       className="bg-primaryy w-full rounded-md  text-white mt-5 text-base text-textColor font-semibold text-center "
               >
                 {loading ? (
                   <TbFidgetSpinner className="m-auto animate-spin" size={24} />
@@ -183,8 +186,6 @@ const EditProduct = () => {
                   "Continue"
                 )}
               </Button>
-
-              {/* <Button htmlType="submit" style={{width:'100%',marginBottom:'20px'}}>submit</Button> */}
             </Col>
           </Row>
         </FMForm>

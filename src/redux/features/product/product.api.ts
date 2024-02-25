@@ -1,21 +1,20 @@
 import { TProduct } from "../../../types";
 import { baseApi } from "../../api/baseApi";
-type TMeta={
-    page:number;
-    limit: number;
-    total: number;
-    totalPage: number;
-}
-type TData={
-    _id:string,
-} & TProduct
-type TResponse={
-    success:boolean;
-    message:string;
-    data:TData[];
-    meta:TMeta;
-    
-}
+type TMeta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPage: number;
+};
+type TData = {
+  _id: string;
+} & TProduct;
+type TResponse = {
+  success: boolean;
+  message: string;
+  data: TData[];
+  meta: TMeta;
+};
 const productManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     addProduct: builder.mutation({
@@ -24,34 +23,36 @@ const productManagementApi = baseApi.injectEndpoints({
         method: "POST",
         body: userInfo,
       }),
+      invalidatesTags:["product"]
     }),
     getAllProduct: builder.query({
       query: (args) => {
-        const params=new URLSearchParams()
-        if(args){
-            args.forEach((item: { name: string; value: string; })=> {
-              params.append(item.name,item.value)
-            });
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item: { name: string; value: string }) => {
+            params.append(item.name, item.value);
+          });
         }
         return {
-        url: "product/flowers",
-        method: "GET",
-        params:params
-      }},
-      transformResponse: (response:any) => {
+          url: "product/flowers",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: any) => {
         return {
           data: response.data,
           meta: response.meta,
-        }as TResponse
+        } as TResponse;
       },
-      providesTags:['product']
+      providesTags: ["product"],
     }),
     delateSingleProduct: builder.mutation({
       query: (id) => ({
         url: `product/${id}`,
         method: "Delete",
       }),
-      invalidatesTags: ['product']
+      invalidatesTags: ["product"],
     }),
     delateMultipleProduct: builder.mutation({
       query: (deleteInfo) => ({
@@ -59,9 +60,34 @@ const productManagementApi = baseApi.injectEndpoints({
         method: "POST",
         body: deleteInfo,
       }),
-      invalidatesTags: ['product']
+      invalidatesTags: ["product"],
     }),
+    getSingleProduct: builder.query({
+      query: (id) => ({
+        url: `/product/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (response: any) => {
+        return {
+          data: response.data,
+        } 
+      },
+    }),
+    editProduct:builder.mutation({
+      query:({id,productInfo})=>({
+      url:`product/${id}`,
+      method:'PATCH',
+      body:productInfo
+      }),
+      invalidatesTags:['product'] as any
+  })
   }),
 });
-export const { useAddProductMutation, useGetAllProductQuery,useDelateSingleProductMutation } =
-  productManagementApi;
+export const {
+  useAddProductMutation,
+  useGetAllProductQuery,
+  useDelateSingleProductMutation,
+  useDelateMultipleProductMutation,
+  useGetSingleProductQuery,
+  useEditProductMutation
+} = productManagementApi;
