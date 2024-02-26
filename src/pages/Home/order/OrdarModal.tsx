@@ -41,7 +41,7 @@ const OrderModal = ({ isModalOpen, setIsModalOpen, item }: TProps) => {
       saleDate: data.date,
       coupon: data.promoCode || null,
     };
-    console.log(saleInfo);
+    
     const res = (await crateSale(saleInfo)) as any;
 
     if (res?.error) {

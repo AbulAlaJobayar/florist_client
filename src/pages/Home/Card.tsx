@@ -6,7 +6,6 @@ import { MdProductionQuantityLimits } from "react-icons/md";
 import { SlSizeActual } from "react-icons/sl";
 import OrderModal from "./order/OrdarModal";
 import { Button } from "antd";
-// import { TProduct } from "../../types";
 
 type TCard = {
   key: any;
@@ -24,7 +23,7 @@ const Card: React.FC<TCard> = ({ item }:any) => {
         <img
           alt="Home"
           src={item.image}
-          className=" rounded w-full rounded-md object-cover h-36"
+          className=" w-full rounded-md object-cover h-36"
         />
         <div className="mt-2 mx-4">
           <div className="flex justify-between items-center">

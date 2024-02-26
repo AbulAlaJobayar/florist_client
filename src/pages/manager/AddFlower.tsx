@@ -20,7 +20,7 @@ const AddFlower = () => {
   const [loading, setLoading] = useState(false);
   const [productData] = useAddProductMutation();
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
+   
     setLoading(true);
     const toastId = toast.loading("Product Adding", {
       position: "top-center",
@@ -31,10 +31,9 @@ const AddFlower = () => {
     });
     try {
       const image = data?.image;
-      console.log(image);
       // hosting image in imgbb
       const imageUrl = await imageHosting(image);
-      console.log(imageUrl);
+    
       const productInfo = {
         name: data.name,
         image: imageUrl,
@@ -46,7 +45,6 @@ const AddFlower = () => {
         size: data.size,
         fragrance: data.fragrance,
       };
-      console.log(productInfo);
       // send data in server
       const res = (await productData(productInfo)) as any;
       if (res.error) {

@@ -16,12 +16,10 @@ const userRole = {
 
 const SideBar = () => {
   const user = useAppSelector(selectCurrentUser);
-  //  const user={
-  //   role:'seller'
-  //  }
+  
 
   let sidebarItems;
-  console.log(user?.role);
+ 
   switch (user!.role) {
     case userRole.Manager:
       sidebarItems = sidebarItemsGenerator(managerRoutes, userRole.Manager);

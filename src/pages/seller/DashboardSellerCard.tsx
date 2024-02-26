@@ -12,7 +12,7 @@ import {
 
 const DashboardSellerCard = () => {
   const { data: gateData } = useSellerSellQuery("");
-  console.log(gateData);
+
 
   const getCountDate = (name: string, data: any) => {
     switch (name) {

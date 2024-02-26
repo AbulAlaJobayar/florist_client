@@ -24,7 +24,7 @@ const [loading,setLoading]=useState(false)
   const dispatch = useAppDispatch();
   const [loginData] = useLoginMutation();
   const onSubmit = async (data: FieldValues) => {
-    console.log(data.email, data.password)
+
     const uerInfo={
       email: data.email,
       password: data.password,
@@ -39,9 +39,9 @@ const [loading,setLoading]=useState(false)
     setLoading(true);
     try {
       const res = await loginData(uerInfo).unwrap();
-      console.log(res);
+      
       const user = verifyToken(res.data)as TUser;
-      console.log(user);
+      
       dispatch(setUser({ user: user, token: res.data }));
       toast.success("login success", {
         id: toastId,

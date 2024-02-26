@@ -12,7 +12,7 @@ import moment from "moment";
 
 const DashboardCard = () => {
   const { data: gateData } = useGetAllSellQuery("");
-  console.log(gateData);
+  
 
   const getCountDate = (name: string, data: any) => {
     switch (name) {
@@ -52,7 +52,7 @@ const DashboardCard = () => {
   const weekly = getCountDate("weekly", gateData?.data);
   const month = getCountDate("month", gateData?.data);
   const year = getCountDate("year", gateData?.data);
-  console.log(daily);
+  
   const data = [
     { name: "Daily Sale", value: daily?.length || 0 },
     { name: "Weekly Sale", value: weekly?.length || 0 },
