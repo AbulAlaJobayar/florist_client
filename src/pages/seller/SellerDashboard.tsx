@@ -1,9 +1,21 @@
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../redux/hooks";
+import DashboardSellerCard from "./DashboardSellerCard";
 
 const SellerDashboard = () => {
+  const user = useAppSelector(selectCurrentUser);
   return (
-    <div>
-      <h1>This is SellerDashboard component</h1>
-        </div>
+    <div className="mx-4">
+      <div className=" text-center">
+        <h1 className=" text-2xl font-semibold secondaryyFont pt-4 pb-2 text-textColor">
+          Hello, {user?.name} !
+        </h1>
+        <p className=" text-base text-textColor  primaryyFont">
+          Here your Store Seeling performance
+        </p>
+      </div>
+      <DashboardSellerCard/>
+    </div>
   );
 };
 

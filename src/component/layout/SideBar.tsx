@@ -2,75 +2,36 @@ import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 // import { SidebarItems } from "./SideBarItems";
 import { NavLink } from "react-router-dom";
-// import { IoHomeOutline } from "react-icons/io5";
-// import { HiOutlineViewGrid } from "react-icons/hi";
-// import { MdAddShoppingCart } from "react-icons/md";
-// import { TbShoppingBagEdit } from "react-icons/tb";
-// import { AiOutlineShoppingCart } from "react-icons/ai";
-// import { FaRegUser } from "react-icons/fa6";
+
 import { sidebarItemsGenerator } from "../../utils/sidebarGenerator";
 import { managerRoutes } from "../../routers/manager.routes";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { sellerRoutes } from "../../routers/seller.routes";
+
+const userRole = {
+  Manager: "manager",
+  Seller: "seller",
+};
 
 const SideBar = () => {
+  const user = useAppSelector(selectCurrentUser);
+  //  const user={
+  //   role:'seller'
+  //  }
 
-
-  // const SidebarItems = [
-  //   {
-  //     key: "home",
-  //     icon: <IoHomeOutline />,
-  //     label: (
-  //       <NavLink to="/">
-  //         <span className="SFont text-base">Home</span>
-  //       </NavLink>
-  //     ),
-  //   },
-  //   {
-  //     key: "dashboard",
-  //     icon: <HiOutlineViewGrid />,
-  //     label: (
-  //       <NavLink to="/dashboard">
-  //         <span className="SFont text-base">Dashboard</span>
-  //       </NavLink>
-  //     ),
-  //   },
-  //   {
-  //     key: "addProduct",
-  //     icon: <MdAddShoppingCart />,
-  //     label: (
-  //       <NavLink to="/addProduct">
-  //         <span className="SFont text-base">Add Product</span>
-  //       </NavLink>
-  //     ),
-  //   },
-  //   {
-  //     key: "manageProduct",
-  //     icon: <TbShoppingBagEdit />,
-  //     label: (
-  //       <NavLink to="/manageProduct">
-  //         <span className="SFont text-base">Manage Product</span>
-  //       </NavLink>
-  //     ),
-  //   },
-  //   {
-  //     key: "order",
-  //     icon: <AiOutlineShoppingCart />,
-  //     label: (
-  //       <NavLink to="/order">
-  //         <span className="SFont text-base">Order</span>
-  //       </NavLink>
-  //     ),
-  //   },
-  //   {
-  //     key: "profile",
-  //     icon: <FaRegUser />,
-  //     label: (
-  //       <NavLink to="/profile">
-  //         {" "}
-  //         <span className="SFont text-base">Profile</span>
-  //       </NavLink>
-  //     ),
-  //   }
-  // ];
+  let sidebarItems;
+  console.log(user?.role);
+  switch (user!.role) {
+    case userRole.Manager:
+      sidebarItems = sidebarItemsGenerator(managerRoutes, userRole.Manager);
+      break;
+    case userRole.Seller:
+      sidebarItems = sidebarItemsGenerator(sellerRoutes, userRole.Seller);
+      break;
+    default:
+      break;
+  }
 
   return (
     <Sider
@@ -101,7 +62,7 @@ const SideBar = () => {
       <Menu
         mode="inline"
         defaultSelectedKeys={["5"]}
-        items={sidebarItemsGenerator(managerRoutes,'manager')}
+        items={sidebarItems}
         style={{ backgroundColor: "#8ed1a3" }}
         className="SFont active:text-red-800"
       />

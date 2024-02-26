@@ -4,6 +4,7 @@ import App from "../App";
 import { routeGenerator } from "../utils/routesGenerater";
 import { managerRoutes } from "./manager.routes";
 import Home from "../pages/Home/Home";
+import { sellerRoutes } from "./seller.routes";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "/manager",
         children: routeGenerator(managerRoutes),
+      },
+      {
+        path: "/seller",
+        children: routeGenerator(sellerRoutes),
       },
     ],
   },

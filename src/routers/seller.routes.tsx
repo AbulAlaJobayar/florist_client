@@ -1,31 +1,25 @@
-// import SellerDashboard from "../pages/seller/SellerDashboard";
 
-// export const sellerRoutes = [
-//         {
-//           name: "Dashboard",
-//           path: "dashboard",
-//           element: <SellerDashboard/>,
-//         },
-//         {
-//           name: "Flower Management",
-//           children: [
-//             {
-//               name: "Add Flower",
-//               path: "addflower",
-//               element: <AddFlower />,
-//             },
-//             {
-//               name: "Add Seller",
-//               path: "addSeller",
-//               element: <AddSeller />,
-//             },
-      
-//             {
-//               name :"All Flower",
-//               path:'allFlower',
-//               element:<AllFlower/>
-//             }
-//           ],
-//         },
-//       ];
+import Home from "../pages/Home/Home";
+import SellerDashboard from "../pages/seller/SellerDashboard";
+import SellerSale from "../pages/seller/SellerSale";
+
+export const sellerRoutes = [
+        {
+          name: "Home",
+          path: "../",
+          element:<Home/> ,
+        },
+        {
+          name: "Dashboard",
+          path: "dashboard",
+          element:<SellerDashboard/>
+        },
+        {
+          name: " Total Sale",
+          path: "sale",
+          element:<SellerSale/>
+        },
+        
+        
+      ];
       
