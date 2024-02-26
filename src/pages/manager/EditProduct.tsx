@@ -5,19 +5,16 @@ import FMForm from "../../component/form/FMForm";
 import { Button, Col, Row } from "antd";
 import FMInput from "../../component/form/FMInput";
 import {  FieldValues } from "react-hook-form";
-//import FMDatepicker from "../../component/form/FMDatepicker";
 import PMSelect from "../../component/form/FMSelect";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { toast } from "sonner";
-// import { imageHosting } from "../../utils/imageHosting";
 import {
   flowerCategoryOptions,
   flowerColorOptions,
   flowerFragranceOptions,
   flowerSizeOptions,
 } from "../../constant/golbal";
-// import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
+
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -39,7 +36,7 @@ const EditProduct = () => {
   const onSubmit = async (data: FieldValues) => {
     
     setLoading(true);
-    const toastId = toast.loading("Product Adding", {
+    const toastId = toast.loading("Product Editing", {
       position: "top-center",
       style: {
         color: "#8ed1a3",
@@ -70,7 +67,7 @@ const EditProduct = () => {
         });
         setLoading(false);
       } else {
-        toast.success("Product Added successfully", {
+        toast.success("Product Edit successfully", {
           id: toastId,
           duration: 2000,
           position: "top-center",
@@ -96,33 +93,12 @@ const EditProduct = () => {
         <FMForm
           onSubmit={onSubmit}
           defaultValues={defaultValue}
-        // resolver={zodResolver(productSchemaValidation)}
+        
         >
           <Row gutter={12}>
             <Col span={12}>
               <FMInput type="text" name="name" label="Flower Name" />
             </Col>
-            {/* <Col span={12}>
-              <Controller
-                name="image"
-                render={({
-                  field: { onChange, value, ...field },
-                  fieldState: { error },
-                }) => (
-                  <Form.Item label={"Image"}>
-                    <Input
-                      type="file"
-                      value={value?.fileName}
-                      {...field}
-                      onChange={(e) => onChange(e.target.files?.[0])}
-                    />
-                    {error && (
-                      <small style={{ color: "red" }}>{error.message}</small>
-                    )}
-                  </Form.Item>
-                )}
-              />
-            </Col> */}
             <Col span={12}>
               <FMInput type="number" name="price" label="Flower Price" />
             </Col>

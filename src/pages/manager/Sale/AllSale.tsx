@@ -20,7 +20,7 @@ const AllSale = () => {
     _id: item?._id,
     key: item?._id,
     productName: item?.productId?.name,
-    productPrice: item?.productId?.name,
+    productPrice: item?.productId?.price,
     buyerName: item?.buyerName,
     sellerName: item?.sellerName,
     quantity: item?.sell,
