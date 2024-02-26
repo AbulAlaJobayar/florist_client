@@ -201,9 +201,9 @@ const handleDuplicate=(item:string)=>{
  
 
   const onChange: TableProps<DataType>["onChange"] = (
-    pagination,
+    _pagination,
     filters,
-    sorter,
+    _sorter,
     extra
   ) => {
     if (extra.action==='filter'){
