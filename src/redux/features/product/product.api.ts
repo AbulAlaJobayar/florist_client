@@ -80,7 +80,23 @@ const productManagementApi = baseApi.injectEndpoints({
       body:productInfo
       }),
       invalidatesTags:['product'] as any
-  })
+  }),
+  addSale: builder.mutation({
+    query: (saleInfo) => ({
+      url: "sale/createSale",
+      method: "POST",
+      body: saleInfo,
+    }),
+    invalidatesTags:["product","sale"],
+  
+  }),
+  getAllSell: builder.query({
+    query: () => ({
+        url: '/sale/allSales',
+        method: 'GET'
+    }),
+    providesTags:['sale']
+})
   }),
 });
 export const {
@@ -89,5 +105,7 @@ export const {
   useDelateSingleProductMutation,
   useDelateMultipleProductMutation,
   useGetSingleProductQuery,
-  useEditProductMutation
+  useEditProductMutation,
+  useAddSaleMutation,
+  useGetAllSellQuery,
 } = productManagementApi;

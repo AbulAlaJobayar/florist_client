@@ -1,15 +1,17 @@
 import { FieldValues } from "react-hook-form";
 import FMForm from "../../../component/form/FMForm";
 import FMInput from "../../../component/form/FMInput";
-import { Button} from "antd";
+import { Button } from "antd";
 import { toast } from "sonner";
+import { useAddCouponMutation } from "../../../redux/features/coupon/coupon.api";
 
 const CreateCoupon = () => {
-        const defaultValue={
-                code:"borno25",
-                discountPercentage:25,   
-        }
-  const onSubmit = async(data: FieldValues) => {
+  const defaultValue = {
+    code: "borno25",
+    discountPercentage: 25,
+  };
+  const [couponData]=useAddCouponMutation()
+  const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Coupon Adding", {
       position: "top-center",
       style: {
@@ -17,16 +19,14 @@ const CreateCoupon = () => {
       },
       duration: 2000,
     });
+   
     try {
-     
-     
-      const couponInfo={
-        coupon:data.coupon,
-        discountPercentage:data.discountPercentage
-    }
-      console.log(couponInfo);
+      const couponInfo = {
+        code: data.code,
+        discountPercentage: data.discountPercentage,
+      };
       // send data in server
-      const res = (await productData(productInfo)) as any;
+      const res = (await couponData(couponInfo)) as any;
       if (res.error) {
         toast.error("Something went Wrong, Please try again", {
           id: toastId,
@@ -48,8 +48,6 @@ const CreateCoupon = () => {
         style: { color: "red" },
       });
     }
-
-
   };
   return (
     <div className="flex justify-center items-center  min-h-screen">

@@ -1,16 +1,17 @@
 import Register from "../pages/Register/Register";
+import Dashboard from "../pages/dashboard/Dashboard";
 import AddFlower from "../pages/manager/AddFlower";
 import AllFlower from "../pages/manager/AllFlower";
 import DuplicateProduct from "../pages/manager/DuplicateProduct";
 import EditProduct from "../pages/manager/EditProduct";
-import ManagerDashboard from "../pages/manager/ManagerDashboard";
+//import ManagerDashboard from "../pages/manager/ManagerDashboard";
 import CreateCoupon from "../pages/manager/coupon/CreateCoupon";
 
 export const managerRoutes = [
   {
     name: "Dashboard",
     path: "dashboard",
-    element: <ManagerDashboard />,
+    element: <Dashboard/>,
   },
   {
     name: "Flower Management",
