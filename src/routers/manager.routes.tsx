@@ -4,6 +4,7 @@ import AllFlower from "../pages/manager/AllFlower";
 import DuplicateProduct from "../pages/manager/DuplicateProduct";
 import EditProduct from "../pages/manager/EditProduct";
 import ManagerDashboard from "../pages/manager/ManagerDashboard";
+import CreateCoupon from "../pages/manager/coupon/CreateCoupon";
 
 export const managerRoutes = [
   {
@@ -40,7 +41,8 @@ export const managerRoutes = [
     element:<Register/>
   },
   {
-        name:'Order',
-        path:'order'
+        name:'Create Coupon',
+        path:'createCoupon',
+        element:<CreateCoupon/>
   }
 ];

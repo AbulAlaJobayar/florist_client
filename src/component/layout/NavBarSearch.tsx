@@ -1,18 +1,18 @@
 import { ConfigProvider, Input } from "antd";
 import type { SearchProps } from "antd/es/input/Search";
-import { useGetAllProductQuery } from "../../redux/features/product/product.api";
-import { useState } from "react";
+import { useAppDispatch } from "../../redux/hooks";
+import  { setSearch } from "../../redux/features/searchSlice";
 
 const { Search } = Input;
 
 const NavBarSearch = () => {
-  const [params,setParams]=useState()
-
-    const {data:productData,}=useGetAllProductQuery([{name:"searchTerm",value:params}])
+  const dispatch = useAppDispatch();
  
 const onSearch: SearchProps["onSearch"] = (value:any) =>{
-          setParams(value)
-          console.log(productData)
+ 
+ 
+  dispatch(setSearch(value))
+
 }
 
 
