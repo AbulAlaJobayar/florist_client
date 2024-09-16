@@ -14,7 +14,9 @@ const Home = () => {
     }
   }, [searchParam]);
 
-  const { data, isLoading, refetch } = useGetAllProductQuery([{name:"searchTerm",value:params}]);
+  const { data, isLoading, refetch } = useGetAllProductQuery([
+    { name: "searchTerm", value: params },
+  ]);
 
   useEffect(() => {
     refetch();
@@ -23,6 +25,7 @@ const Home = () => {
   if (isLoading) {
     return <div>loading...</div>;
   }
+  console.log(data)
   return (
     <div className="container mx-auto">
       <div className="bg-[#fff9f4]">

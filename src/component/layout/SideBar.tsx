@@ -19,7 +19,7 @@ const SideBar = () => {
   
 
   let sidebarItems;
- 
+  
   switch (user!.role) {
     case userRole.Manager:
       sidebarItems = sidebarItemsGenerator(managerRoutes, userRole.Manager);
