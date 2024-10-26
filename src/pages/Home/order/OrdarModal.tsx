@@ -8,6 +8,7 @@ import FMDatepicker from "../../../component/form/FMDatepicker";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
 import { useAddSaleMutation } from "../../../redux/features/product/product.api";
+import FMSelect from "../../../component/form/FMSelect";
 type TProps = {
   isModalOpen: boolean;
   setIsModalOpen: any;
@@ -36,12 +37,14 @@ const OrderModal = ({ isModalOpen, setIsModalOpen, item }: TProps) => {
     const saleInfo = {
       productId: item._id,
       buyerName: data.buyerName,
+      phoneNumber: data.phoneNumber,
+      paymentStatus: data.paymentStatus,
       sell: Number(data.quantity || 1),
       sellerName: data.seller,
       saleDate: data.date,
       coupon: data.promoCode || null,
     };
-    
+
     const res = (await crateSale(saleInfo)) as any;
 
     if (res?.error) {
@@ -90,6 +93,22 @@ const OrderModal = ({ isModalOpen, setIsModalOpen, item }: TProps) => {
               </Col>
               <Col span={12}>
                 <FMInput type="text" name="buyerName" label="Buyer Name" />
+              </Col>
+            </Row>
+            <Row gutter={12}>
+              <Col span={12}>
+                <FMInput type="text" name="phoneNumber" label="Phone Number" />
+              </Col>
+              <Col span={12}>
+                <FMSelect
+                  name="paymentStatus"
+                  label="Payment Status"
+                  options={[
+                    { value: "card", label: "Card" },
+                    { value: "cash", label: "Cash" },
+                    { value: "mobile_banking", label: "Mobile Banking" },
+                  ]}
+                />
               </Col>
             </Row>
             <Row gutter={12}>

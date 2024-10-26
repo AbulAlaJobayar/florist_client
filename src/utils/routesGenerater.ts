@@ -1,4 +1,7 @@
+
+import { ReactNode } from "react";
 import { TRoute, TUserPath } from "../types";
+
 
 export const routeGenerator = (items: TUserPath[]) => {
         const routes = items.reduce((acc: TRoute[], item) => {
@@ -6,6 +9,7 @@ export const routeGenerator = (items: TUserPath[]) => {
             acc.push({
               path: item.path,
               element: item.element,
+              icon:item.icon as ReactNode
             });
           }
       
@@ -14,6 +18,7 @@ export const routeGenerator = (items: TUserPath[]) => {
               acc.push({
                 path: child.path!,
                 element: child.element,
+                icon: child.icon as ReactNode
               });
             });
           }

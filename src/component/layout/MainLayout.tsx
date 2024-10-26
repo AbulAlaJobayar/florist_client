@@ -27,10 +27,9 @@ const MainLayout = () => {
           <SideBar />
           <Layout>
             <DashboardNavbar />
-            <Content style={{ margin: "24px 16px 0" }}>
-              <div
-              >
-              <Outlet/>
+            <Content style={{ margin: "24px 16px 0"}}>
+              <div>
+                <Outlet />
               </div>
             </Content>
           </Layout>

@@ -1,9 +1,16 @@
 import { Button, Space, Table, TableColumnsType, TableProps } from "antd";
-import { useDelateMultipleProductMutation, useDelateSingleProductMutation, useGetAllProductQuery } from "../../redux/features/product/product.api";
+import {
+  useDelateMultipleProductMutation,
+  useDelateSingleProductMutation,
+  useGetAllProductQuery,
+} from "../../redux/features/product/product.api";
 import moment from "moment";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { FaEdit } from "react-icons/fa";
+import { IoDuplicateSharp } from "react-icons/io5";
+import { RiDeleteBin2Fill } from "react-icons/ri";
 
 interface DataType {
   _id: string;
@@ -18,11 +25,11 @@ interface DataType {
   image: string;
 }
 const AllFlower = () => {
-  const [params,setParams]=useState([])
-  const navigate=useNavigate()
+  const [params, setParams] = useState([]);
+  const navigate = useNavigate();
   const { data: allProduct } = useGetAllProductQuery(params);
-  const [deleteSingleProduct]=useDelateSingleProductMutation()
-  const [bulkDelete]=useDelateMultipleProductMutation()
+  const [deleteSingleProduct] = useDelateSingleProductMutation();
+  const [bulkDelete] = useDelateMultipleProductMutation();
   const filteredData = allProduct?.data.map(
     ({
       _id,
@@ -50,49 +57,29 @@ const AllFlower = () => {
     })
   );
 
-const handleDelete=(item:string)=>{
-  const toastId = toast.loading("product Deleting", {
-    position: "top-center",
-    style: {
-      color: "#8ed1a3",
-    },
-    duration: 5000,
-  })
-  deleteSingleProduct(item)
-  toast.success("Deleted successfully", {
-    id: toastId,
-    duration: 2000,
-    position: "top-center",
-  })
-}
-const handleEdit=(item:string)=>{
-  navigate(`${item}`)
-  console.log("edit",item)
-}
-const handleDuplicate=(item:string)=>{
-   navigate(`../duplicate/${item}`)
-  // const toastId = toast.loading("product Deleting", {
-  //   position: "top-center",
-  //   style: {
-  //     color: "#8ed1a3",
-  //   },
-  //   duration: 5000,
-  // })
-  // deleteSingleProduct(item)
-  // toast.success("Deleted successfully", {
-  //   id: toastId,
-  //   duration: 2000,
-  //   position: "top-center",
-  // })
-}
+  const handleDelete = (item: string) => {
+    const toastId = toast.loading("product Deleting", {
+      position: "top-center",
+      style: {
+        color: "#8ed1a3",
+      },
+      duration: 5000,
+    });
+    deleteSingleProduct(item);
+    toast.success("Deleted successfully", {
+      id: toastId,
+      duration: 2000,
+      position: "top-center",
+    });
+  };
+  const handleEdit = (item: string) => {
+    navigate(`${item}`);
+    console.log("edit", item);
+  };
+  const handleDuplicate = (item: string) => {
+    navigate(`../duplicate/${item}`);
+  };
 
-
-
-
-
-
-
- 
   const columns: TableColumnsType<DataType> = [
     {
       title: "Name",
@@ -117,88 +104,106 @@ const handleDuplicate=(item:string)=>{
     {
       title: "Type",
       dataIndex: "category",
-      
-      filters:[
+
+      filters: [
         {
-          text:'Rose',
-          value:'Rose'
+          text: "Rose",
+          value: "Rose",
         },
         {
-          text:'Bulb',
-          value:'Bulb'
+          text: "Bulb",
+          value: "Bulb",
         },
         {
-          text:'Perennial',
-          value:'Perennial'
+          text: "Perennial",
+          value: "Perennial",
         },
         {
-          text:'Annual',
-          value:'Annual'
+          text: "Annual",
+          value: "Annual",
         },
         {
-          text:'Shrub',
-          value:'Shrub'
+          text: "Shrub",
+          value: "Shrub",
         },
         {
-          text:'Climber',
-          value:'Climber'
+          text: "Climber",
+          value: "Climber",
         },
         {
-          text:'Wildflower',
-          value:'Wildflower'
+          text: "Wildflower",
+          value: "Wildflower",
         },
         {
-          text:'Herbaceous',
-          value:'Herbaceous'
+          text: "Herbaceous",
+          value: "Herbaceous",
         },
         {
-          text:'Tree',
-          value:'Tree'
+          text: "Tree",
+          value: "Tree",
         },
         {
-          text:'Orchid',
-          value:'Orchid'
+          text: "Orchid",
+          value: "Orchid",
         },
         {
-          text:'Tropical',
-          value:'Tropical'
+          text: "Tropical",
+          value: "Tropical",
         },
         {
-          text:'Aquatic',
-          value:'Aquatic'
+          text: "Aquatic",
+          value: "Aquatic",
         },
-      ]
+      ],
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
-    
     },
     {
       title: "Price",
       dataIndex: "price",
-      render:(value)=>`$ ${value}`,
+      render: (value) => `$ ${value}`,
       sorter: (a, b) => Number(a.price) - Number(b.price),
     },
     {
       title: "Action",
-      render: (item) =>(
+      render: (item) => (
         <Space>
-          <Button size="small" onClick={() => handleDelete(item._id)}>Delete</Button>
-       <Space>
-       <Button size="small" onClick={() => handleEdit(item._id)}>Edit</Button>
-       </Space>
-       <Space>
-       <Button size="small" onClick={() => handleDuplicate(item._id)}>Duplicate</Button>
-       </Space>
-       
-        </Space>
-      )
+        
+          <Space>
+            <Button
+              style={{ backgroundColor: "#288EC7", color: "white" }}
+              size="middle"
+              onClick={() => handleEdit(item._id)}
+            >
+              <FaEdit />
+            </Button>
+          </Space>
+          <Space>
+            <Button
+              style={{ backgroundColor: "#288EC7", color: "white" }}
+              size="middle"
+              onClick={() => handleDuplicate(item._id)}
+            >
+              <IoDuplicateSharp/>
+            </Button>
+          </Space>
+          <Space>
+          <Button
+            type="primary"
+            danger
+            size="middle"
+            onClick={() => handleDelete(item._id)}
+          >
+            <RiDeleteBin2Fill />
+          </Button>
+          </Space>
+          </Space>
+      
+      ),
     },
-   
   ];
-
- 
 
   const onChange: TableProps<DataType>["onChange"] = (
     _pagination,
@@ -206,16 +211,16 @@ const handleDuplicate=(item:string)=>{
     _sorter,
     extra
   ) => {
-    if (extra.action==='filter'){
-     const queryParams:any=[]
-     filters.category?.forEach((item)=>(
-      queryParams.push({name:'category',value:item})
-     ))
-     setParams(queryParams);
+    if (extra.action === "filter") {
+      const queryParams: any = [];
+      filters.category?.forEach((item) =>
+        queryParams.push({ name: "category", value: item })
+      );
+      setParams(queryParams);
     }
   };
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const onSelectChange = (newSelectedRowKeys:any) => {
+  const onSelectChange = (newSelectedRowKeys: any) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
@@ -223,33 +228,42 @@ const handleDuplicate=(item:string)=>{
     onChange: onSelectChange,
   };
   // bulk delete
-  const handleBulkDelete=()=>{
+  const handleBulkDelete = () => {
     const toastId = toast.loading("product Deleting", {
       position: "top-center",
       style: {
         color: "#8ed1a3",
       },
       duration: 5000,
-    })
-    bulkDelete(selectedRowKeys)
+    });
+    bulkDelete(selectedRowKeys);
     toast.success("Deleted successfully", {
       id: toastId,
       duration: 2000,
       position: "top-center",
-    })
-  }
+    });
+  };
   const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
-     <div style={{marginBottom:16}}>
-        <Button type="default" onClick={handleBulkDelete} disabled={!hasSelected} >
+      <div style={{ marginBottom: 16 }}>
+        <Button
+          type="default"
+          onClick={handleBulkDelete}
+          disabled={!hasSelected}
+        >
           Bulk Delete
         </Button>
         <span style={{ marginLeft: 8 }}>
-          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
         </span>
       </div>
-      <Table  rowSelection={rowSelection} columns={columns} dataSource={filteredData} onChange={onChange} />
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={filteredData}
+        onChange={onChange}
+      />
     </>
   );
 };

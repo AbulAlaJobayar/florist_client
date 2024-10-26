@@ -7,7 +7,7 @@ type TPHSelectProps = {
   options: { value: string; label: string; disabled?: boolean }[];
 };
 
-const PMSelect = ({ label, name, options }: TPHSelectProps) => {
+const FMSelect = ({ label, name, options }: TPHSelectProps) => {
   return (
     <Controller
       name={name}
@@ -26,4 +26,4 @@ const PMSelect = ({ label, name, options }: TPHSelectProps) => {
   );
 };
 
-export default PMSelect;
+export default FMSelect;

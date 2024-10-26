@@ -12,7 +12,7 @@ import { TUser, setUser } from "../../redux/features/auth/authSlice";
 import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Marquee from "react-fast-marquee";
+
 
 const loginSchemaValidation = z.object({
   email: z.string({ required_error: "This field is required" }).email(),
@@ -96,18 +96,18 @@ const Login = () => {
         </FMForm>
 
         <div className="mt-6 text-center">
-        <Marquee speed={20} style={{color:'red'}}>
-        Manager: Email: abulalajobayar@gmail.com, Password: 12345 || Seller: Email:jobayar59@gmail.com, Password: 12345, || Coupon: borno25  ||-----------|| 
-</Marquee>
-          {/* <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link
-              to="/register"
-              className="text-[#8ED1A3] font-semibold hover:underline"
-            >
-              Sign up
-            </Link>
-          </p> */}
+          <p className="text-sm text-gray-600">
+          Manager: Email: abulalajobayar@gmail.com, Password: 12345 
+            
+          </p>
+          <p className="text-sm text-gray-600">
+          Seller: Email:jobayar59@gmail.com, Password: 12345,
+            
+          </p>
+          <p className="text-sm text-gray-600">
+          Coupon: borno25 
+            
+          </p>
         </div>
       </div>
     </div>

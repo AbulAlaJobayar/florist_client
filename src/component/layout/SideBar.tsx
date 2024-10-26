@@ -8,6 +8,7 @@ import { managerRoutes } from "../../routers/manager.routes";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import { sellerRoutes } from "../../routers/seller.routes";
+import React, { useState } from "react";
 
 const userRole = {
   Manager: "manager",
@@ -16,10 +17,13 @@ const userRole = {
 
 const SideBar = () => {
   const user = useAppSelector(selectCurrentUser);
-  
+  const [selectedKey, setSelectedKey] = useState<string>("");
+  const handleMenuClick = (e: any) => {
+    setSelectedKey(e.key);
+  };
 
   let sidebarItems;
-  
+
   switch (user!.role) {
     case userRole.Manager:
       sidebarItems = sidebarItemsGenerator(managerRoutes, userRole.Manager);
@@ -34,10 +38,11 @@ const SideBar = () => {
   return (
     <Sider
       breakpoint="lg"
+      // #fdd05e
       collapsedWidth="0"
       style={{
-        backgroundColor: "#8ed1a3",
-        color: "#fdd05e",
+        backgroundColor: "#51a687",
+        color: "red",
         height: "100vh",
         position: "sticky",
         top: "0",
@@ -56,13 +61,22 @@ const SideBar = () => {
           </span>
         </div>
       </NavLink>
-
       <Menu
         mode="inline"
+        selectedKeys={[selectedKey]}
         defaultSelectedKeys={["5"]}
-        items={sidebarItems}
-        style={{ backgroundColor: "#8ed1a3" }}
-        className="SFont active:text-red-800"
+        onClick={handleMenuClick}
+        items={sidebarItems?.map((item) => ({
+          ...item,
+          className:
+            item.key === selectedKey
+              ? "custom-active-item"
+              : "custom-menu-item",
+          icon:
+            item.icon &&
+            React.cloneElement(item.icon, { className: "custom-menu-icon" }),
+        }))}
+        style={{ backgroundColor: "#51a687" }}
       />
     </Sider>
   );

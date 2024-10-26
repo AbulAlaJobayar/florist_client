@@ -36,3 +36,24 @@
   .textColor{
     color: #333333;
   }
+  /* Custom CSS for Menu Items */
+/* Custom CSS for Menu Items */
+.custom-menu-item {
+  color: #02182B !important; /* White text color */
+  font-size: 14px; /* Increase text size */
+  font-weight: 600;
+  margin:0px,10px
+}
+
+/* Custom CSS for Menu Icons */
+.custom-menu-icon {
+  font-size: 24px !important; /* Increase icon size */
+}
+
+/* Active Item Custom Styling */
+.custom-active-item {
+  background-color: #E3FFEC !important; /* Active background color (muted orange) */
+  color: #02182B !important; /* Active text color (darker green) */
+  font-size: 14px;
+  font-weight: 600;
+}

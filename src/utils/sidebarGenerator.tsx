@@ -7,6 +7,7 @@ export const sidebarItemsGenerator = (items: TUserPath[], role:string) => {
     if (item.path && item.name) {
       acc.push({
         key: item.name,
+        icon:item.icon,
         label: <NavLink to={`/${role}/${item.path}`}>{item.name}</NavLink>,
       });
     }

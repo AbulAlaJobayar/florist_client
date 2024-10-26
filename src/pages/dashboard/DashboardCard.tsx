@@ -1,121 +1,147 @@
-/* eslint-disable no-case-declarations */
+
+import React from "react";
 import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
+  Area,
+  AreaChart,
+  CartesianGrid,
   ResponsiveContainer,
   Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import { useGetAllSellQuery } from "../../redux/features/product/product.api";
 import moment from "moment";
+import { RiUser3Line } from "react-icons/ri";
+import { FiUserCheck } from "react-icons/fi";
 
-const DashboardCard = () => {
+
+interface SaleItem {
+  saleDate: string;
+}
+
+// Define the type for the data used in charts
+interface ChartData {
+  name: string;
+  value: number;
+}
+
+const DashboardCard: React.FC = () => {
   const { data: gateData } = useGetAllSellQuery("");
-  
 
-  const getCountDate = (name: string, data: any) => {
+  // Function to filter data based on a specific period
+  const getCountDate = (
+    name: string,
+    data: SaleItem[] | undefined
+  ): SaleItem[] => {
+    if (!data) return [];
+
     switch (name) {
-      case "daily":
-        const today = data?.filter((item: any) => {
-          const saleDate = moment(item.saleDate);
-          const currentDate = moment();
-          return saleDate.isSame(currentDate, "day");
-        });
+      case "daily": {
+        const today = data.filter((item) =>
+          moment(item.saleDate).isSame(moment(), "day")
+        );
         return today;
-      case "weekly":
-        const firstDayOfWeek = moment().startOf('week');
-        const weekly = data?.filter((item:any) => {
-            const saleDate = moment(item.saleDate);
-            return saleDate.isSameOrAfter(firstDayOfWeek, 'day');
-        });
+      }
+      case "weekly": {
+        const firstDayOfWeek: moment.Moment = moment().startOf("week");
+        const weekly = data.filter((item) =>
+          moment(item.saleDate).isSameOrAfter(firstDayOfWeek, "day")
+        );
         return weekly;
-      case "month":
+      }
+      case "month": {
         const currentMonth = moment().month();
-        const monthly = data?.filter((item:any) => {
-            const saleDate = moment(item.saleDate);
-            return saleDate.month() === currentMonth;
-        });
+        const monthly = data.filter(
+          (item) => moment(item.saleDate).month() === currentMonth
+        );
         return monthly;
-      case "year":
+      }
+      case "year": {
         const currentYear = moment().year();
-        const yearly = data?.filter((item:any) => {
-            const saleDate = moment(item.saleDate);
-            return saleDate.year() === currentYear;
-        });
+        const yearly = data.filter(
+          (item) => moment(item.saleDate).year() === currentYear
+        );
         return yearly;
+      }
       default:
-        return data?.filter(() => true);
+        return data;
     }
   };
+
+  // Get filtered data for each period
   const daily = getCountDate("daily", gateData?.data);
   const weekly = getCountDate("weekly", gateData?.data);
   const month = getCountDate("month", gateData?.data);
   const year = getCountDate("year", gateData?.data);
-  
-  const data = [
-    { name: "Daily Sale", value: daily?.length || 0 },
-    { name: "Weekly Sale", value: weekly?.length || 0 },
-    { name: " Monthly Sale", value: month?.length || 0 },
-    { name: "Yearly Sale", value: year?.length || 0 },
+
+  // Prepare data for the charts
+  const data: ChartData[] = [
+    { name: "Daily Sale", value: daily.length },
+    { name: "Weekly Sale", value: weekly.length },
+    { name: "Monthly Sale", value: month.length },
+    { name: "Yearly Sale", value: year.length },
   ];
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel: React.FC<{
-    cx: number;
-    cy: number;
-    midAngle: number;
-    innerRadius: number;
-    outerRadius: number;
-    percent: number;
-    index: number;
-  }> = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill="white"
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-    );
-  };
+  // const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
-    <div style={{ width: "100%", height: 300 }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart width={400} height={400}>
-          <Pie
+    <>
+      <div className=" flex justify-between mb-20">
+        <div className="flex justify-between items-center bg-[#FF9F43] p-5 gap rounded">
+          <div className="font-semibold text-xl mr-16 text-white">
+            <p className="font-semibold text-2xl ">100</p>
+            <p className="font-semibold text-xl">customers</p>
+          </div>
+          <RiUser3Line size={50} color="white" />
+        </div>
+        <div className="flex justify-between items-center bg-[#00CFE8] p-5 gap rounded">
+          <div className="font-semibold text-xl mr-16 text-white">
+            <p className="font-semibold text-2xl ">100</p>
+            <p className="font-semibold text-xl">Sellers</p>
+          </div>
+          <FiUserCheck size={50} color="white" />
+        </div>
+        <div className="flex justify-between items-center bg-[#1B2850] p-5 gap rounded">
+          <div className="font-semibold text-xl mr-16 text-white">
+            <p className="font-semibold text-2xl ">100</p>
+            <p className="font-semibold text-xl">customers</p>
+          </div>
+          <RiUser3Line size={50} color="white" />
+        </div>
+        <div className="flex justify-between items-center bg-[#28C76F] p-5 gap rounded">
+          <div className="font-semibold text-xl mr-16 text-white">
+            <p className="font-semibold text-2xl ">100</p>
+            <p className="font-semibold text-xl">customers</p>
+          </div>
+          <RiUser3Line size={50} color="white" />
+        </div>
+      </div>
+
+      <div style={{ width: "50%", height: 350,marginLeft:-50 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
             data={data}
-            isAnimationActive={true}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
+            margin={{
+              top: 0,
+              right:0,
+              left: 0,
+              bottom: 0,
+            }}
           >
-            {data?.map((_entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend />
-        </PieChart>
-      </ResponsiveContainer>
-    </div>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#82ca9d"
+              fill="#82ca9d"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </>
   );
 };
 
