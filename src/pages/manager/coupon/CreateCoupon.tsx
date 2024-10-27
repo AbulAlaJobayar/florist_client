@@ -10,7 +10,7 @@ const CreateCoupon = () => {
     code: "borno25",
     discountPercentage: 25,
   };
-  const [couponData]=useAddCouponMutation()
+  const [couponData] = useAddCouponMutation();
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Coupon Adding", {
       position: "top-center",
@@ -19,7 +19,7 @@ const CreateCoupon = () => {
       },
       duration: 2000,
     });
-   
+
     try {
       const couponInfo = {
         code: data.code,
@@ -50,33 +50,31 @@ const CreateCoupon = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center  min-h-screen">
-      <div className="flex flex-col max-w-md p-6  rounded-md sm:p-10  text-gray-900">
-        <div className="mb-8 text-center">
-          <h1 className="my-3 text-4xl font-bold textColor">Create coupon</h1>
-        </div>
-        <FMForm onSubmit={onSubmit} defaultValues={defaultValue}>
-          <FMInput name="code" type="text" label="Promo Code" />
-          <FMInput
-            name="discountPercentage"
-            type="number"
-            label="Discount Percentage"
-          />
-
-          <Button
-            htmlType="submit"
-            style={{
-              width: "100%",
-              background: "#8ed1a3",
-              color: "#333333",
-              fontWeight: "500",
-            }}
-            className="pb-4 PFont mx-auto"
-          >
-            Generate Coupon{" "}
-          </Button>
-        </FMForm>
+    <div className="">
+      <div className="mb-8 text-center">
+        <h1 className="my-3 text-4xl font-bold textColor">Create coupon</h1>
       </div>
+      <FMForm onSubmit={onSubmit} defaultValues={defaultValue}>
+        <FMInput name="code" type="text" label="Promo Code" />
+        <FMInput
+          name="discountPercentage"
+          type="number"
+          label="Discount Percentage"
+        />
+
+        <Button
+          htmlType="submit"
+          style={{
+            width: "100%",
+            background: "#8ed1a3",
+            color: "#333333",
+            fontWeight: "500",
+          }}
+          className="pb-4 PFont mx-auto"
+        >
+          Generate Coupon{" "}
+        </Button>
+      </FMForm>
     </div>
   );
 };

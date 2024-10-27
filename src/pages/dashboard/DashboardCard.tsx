@@ -1,5 +1,6 @@
-
 import React from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+
 import {
   Area,
   AreaChart,
@@ -9,11 +10,20 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useGetAllSellQuery } from "../../redux/features/product/product.api";
+import {
+  useGetAllSellQuery,
+  useTotalProductQuery,
+} from "../../redux/features/product/product.api";
 import moment from "moment";
 import { RiUser3Line } from "react-icons/ri";
 import { FiUserCheck } from "react-icons/fi";
-
+// import { AiOutlineProject } from "react-icons/ai";
+import { CgProductHunt } from "react-icons/cg";
+import { useTotalSellerQuery } from "../../redux/features/seller/seller";
+import { useGetTotalCustomerQuery } from "../../redux/features/customer/customer";
+import { useTotalCouponQuery } from "../../redux/features/coupon/coupon.api";
+import { IoCartOutline } from "react-icons/io5";
+import DashboardTable from "./DashboardTable";
 
 interface SaleItem {
   saleDate: string;
@@ -27,8 +37,15 @@ interface ChartData {
 
 const DashboardCard: React.FC = () => {
   const { data: gateData } = useGetAllSellQuery("");
-
+  const { data: total_Seller, isLoading } = useTotalSellerQuery("");
+  const { data: totalCustomer, isLoading: isCustomerLoading } =
+    useGetTotalCustomerQuery("");
+  const { data: totalCoupon, isLoading: isCouponLoading } =
+    useTotalCouponQuery("");
+  const { data: totalProduct, isLoading: isTotalProductLoading } =
+    useTotalProductQuery("");
   // Function to filter data based on a specific period
+
   const getCountDate = (
     name: string,
     data: SaleItem[] | undefined
@@ -82,64 +99,77 @@ const DashboardCard: React.FC = () => {
     { name: "Yearly Sale", value: year.length },
   ];
 
-  // const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
   return (
     <>
       <div className=" flex justify-between mb-20">
         <div className="flex justify-between items-center bg-[#FF9F43] p-5 gap rounded">
           <div className="font-semibold text-xl mr-16 text-white">
-            <p className="font-semibold text-2xl ">100</p>
+            <p className="font-semibold text-2xl ">
+              {isCustomerLoading ? <LoadingOutlined /> : totalCustomer.data}
+            </p>
             <p className="font-semibold text-xl">customers</p>
           </div>
           <RiUser3Line size={50} color="white" />
         </div>
         <div className="flex justify-between items-center bg-[#00CFE8] p-5 gap rounded">
           <div className="font-semibold text-xl mr-16 text-white">
-            <p className="font-semibold text-2xl ">100</p>
+            <p className="font-semibold text-2xl ">
+              {isLoading ? <LoadingOutlined /> : total_Seller.data}
+            </p>
             <p className="font-semibold text-xl">Sellers</p>
           </div>
           <FiUserCheck size={50} color="white" />
         </div>
         <div className="flex justify-between items-center bg-[#1B2850] p-5 gap rounded">
           <div className="font-semibold text-xl mr-16 text-white">
-            <p className="font-semibold text-2xl ">100</p>
-            <p className="font-semibold text-xl">customers</p>
+            <p className="font-semibold text-2xl ">
+              {isCouponLoading ? <LoadingOutlined /> : totalCoupon.data}
+            </p>
+            <p className="font-semibold text-xl">Coupons</p>
           </div>
-          <RiUser3Line size={50} color="white" />
+          <IoCartOutline size={50} color="white" />
         </div>
         <div className="flex justify-between items-center bg-[#28C76F] p-5 gap rounded">
           <div className="font-semibold text-xl mr-16 text-white">
-            <p className="font-semibold text-2xl ">100</p>
-            <p className="font-semibold text-xl">customers</p>
+            <p className="font-semibold text-2xl ">
+              {isTotalProductLoading ? <LoadingOutlined /> : totalProduct.data}
+            </p>
+            <p className="font-semibold text-xl">Products</p>
           </div>
-          <RiUser3Line size={50} color="white" />
+          <CgProductHunt size={50} color="white" />
+
+          {/* <RiUser3Line size={50} color="white" /> */}
         </div>
       </div>
-
-      <div style={{ width: "50%", height: 350,marginLeft:-50 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={data}
-            margin={{
-              top: 0,
-              right:0,
-              left: 0,
-              bottom: 0,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="#82ca9d"
-              fill="#82ca9d"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+      {/* ------------------------- */}
+      <div className="flex justify-between">
+        <div style={{ width: "50%", height: 350, marginLeft: -50 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={data}
+              margin={{
+                top: 0,
+                right: 0,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#82ca9d"
+                fill="#82ca9d"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <div style={{ width: "50%" }}>
+          <DashboardTable />
+        </div>
       </div>
     </>
   );

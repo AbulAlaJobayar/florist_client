@@ -97,6 +97,12 @@ const productManagementApi = baseApi.injectEndpoints({
     }),
     providesTags:['sale']
 }),
+  totalProduct: builder.query({
+    query: () => ({
+        url: '/product/total_flowers',
+        method: 'GET'
+    }),
+}),
   sellerSell: builder.query({
     query: () => ({
         url: '/sale/sellerSales',
@@ -115,5 +121,6 @@ export const {
   useEditProductMutation,
   useAddSaleMutation,
   useGetAllSellQuery,
-  useSellerSellQuery
+  useSellerSellQuery,
+  useTotalProductQuery
 } = productManagementApi;
