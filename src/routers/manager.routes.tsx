@@ -14,6 +14,8 @@ import { LiaCubesSolid } from "react-icons/lia";
 import { BsCart4 } from "react-icons/bs";
 
 import { AiOutlineUserAdd } from "react-icons/ai";
+import ProfilePage from "../pages/dashboard/profile/Profile";
+import { FaRegUser } from "react-icons/fa";
 
 export const managerRoutes = [
   {
@@ -88,5 +90,11 @@ export const managerRoutes = [
     path: "createCoupon",
     element: <CreateCoupon />,
     icon:<IoCartOutline />
+  },
+  {
+    name: " Profile",
+    path: "profile",
+    element: <ProfilePage />,
+    icon: <FaRegUser />,
   },
 ];

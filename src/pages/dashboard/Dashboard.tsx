@@ -1,8 +1,11 @@
 
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../redux/hooks";
 import DashboardCard from "./DashboardCard";
 
 const Dashboard = () => {
-  // const user = useAppSelector(selectCurrentUser);
+  const user = useAppSelector(selectCurrentUser);
+  console.log(user?.id)
   return (
     <div className="mx-4">
       {/* <div className=" text-center">
