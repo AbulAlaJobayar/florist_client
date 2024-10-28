@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400; 
+}
 .PFont {
     font-family: "Open Sans", sans-serif;
   }
